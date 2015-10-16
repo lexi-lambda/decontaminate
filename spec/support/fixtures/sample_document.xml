@@ -23,4 +23,8 @@
       <Area>Engineering</Area>
     </Specialization>
   </Attributes>
+  <Privileges>
+    <IsPaid>true</IsPaid>
+    <IsAdmin>false</IsAdmin>
+  </Privileges>
 </Root>

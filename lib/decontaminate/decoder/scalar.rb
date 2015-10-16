@@ -10,17 +10,17 @@ module Decontaminate
 
       def decode(xml_node)
         child = xml_node.at_xpath xpath
-        text = coerce_node_to_text child
-
-        return unless text
+        text = child && coerce_node_to_text(child)
 
         case type
         when :string
           text
         when :integer
-          text.to_i
+          text && text.to_i
         when :float
-          text.to_f
+          text && text.to_f
+        when :boolean
+          coerce_string_to_boolean text
         end
       end
 
@@ -32,6 +32,10 @@ module Decontaminate
         else
           node.at_xpath('text()').to_s
         end
+      end
+
+      def coerce_string_to_boolean(str)
+        str == 'true' || str == '1'
       end
     end
   end

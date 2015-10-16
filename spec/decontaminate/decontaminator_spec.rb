@@ -27,6 +27,11 @@ RSpec.describe Decontaminate::Decontaminator do
         scalar 'Area'
       end
     end
+
+    hash 'Privileges' do
+      scalar 'IsPaid', key: 'paid', type: :boolean
+      scalar 'IsAdmin', key: 'admin', type: :boolean
+    end
   end
 
   let(:xml_document) do
@@ -52,6 +57,10 @@ RSpec.describe Decontaminate::Decontaminator do
       'age' => 25,
       'specialization' => {
         'area' => 'Engineering'
+      },
+      'privileges' => {
+        'paid' => true,
+        'admin' => false
       }
     )
   end
