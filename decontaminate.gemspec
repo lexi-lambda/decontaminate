@@ -10,7 +10,8 @@ Gem::Specification.new do |spec|
   spec.email         = ['lexi.lambda@gmail.com']
 
   spec.summary       = 'Convert XML to JSON with a DSL'
-  spec.homepage      = ''
+  spec.homepage      = 'https://github.com/lexi-lambda/decontaminate'
+  spec.licenses      = ['ISC']
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
@@ -24,8 +25,8 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency 'bundler', '~> 1.10'
   spec.add_development_dependency 'pry', '~> 0.10.3'
-  spec.add_development_dependency 'pry-byebug', '~> 3.2.0'
+  spec.add_development_dependency 'pry-byebug', '~> 3.2'
   spec.add_development_dependency 'rake', '~> 10.0'
-  spec.add_development_dependency 'rspec', '~> 3.3.0'
+  spec.add_development_dependency 'rspec', '~> 3.3'
   spec.add_development_dependency 'yard', '~> 0.8.7'
 end
