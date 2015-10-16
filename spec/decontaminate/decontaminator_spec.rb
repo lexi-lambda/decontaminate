@@ -7,6 +7,10 @@ RSpec.describe Decontaminate::Decontaminator do
     scalar 'Name'
     scalars 'BadgeIds', type: :integer
 
+    hash key: 'info' do
+      scalar 'Email'
+    end
+
     hash 'UserProfile', key: 'profile' do
       scalar 'Description'
 
@@ -34,6 +38,9 @@ RSpec.describe Decontaminate::Decontaminator do
     json = SampleDecontaminator.new(xml_document).as_json
     expect(json).to eq(
       'name' => 'John Smith',
+      'info' => {
+        'email' => 'jsmith@example.com'
+      },
       'badge_ids' => [1, 3, 7],
       'profile' => {
         'description' => 'Some user.',

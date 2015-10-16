@@ -35,7 +35,7 @@ module Decontaminate
         add_decoder key, decoder
       end
 
-      def hash(xpath, key: infer_key(xpath), &body)
+      def hash(xpath = '.', key: infer_key(xpath), &body)
         decontaminator = Class.new(Decontaminate::Decontaminator, &body)
         add_decoder key, Decontaminate::Decoder::Hash.new(xpath, decontaminator)
       end

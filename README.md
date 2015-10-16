@@ -85,6 +85,16 @@ end
 
 The `hash` method accepts a block, which works just like the class body, but all paths are scoped to the path passed to `hash`. The `key` argument is optional, just like with `scalar`.
 
+Sometimes it may be useful to create an additional hash in the output as an organizational tool, even though there is no equivalent nesting in the input XML. In this case, the XPath argument may be omitted, specifying only `key:`.
+
+```ruby
+hash key: 'info' do
+  scalar 'Email'
+end
+```
+
+This will fetch a value from the `Email` node on the root, but it will be stored in a property within a separate hash, keyed in the result with `'info'`.
+
 ### Array Data
 
 In addition to the `scalar` and `hash` methods, there are plural forms which allow parsing and extracting data that appears many times within a single document. These are named `scalars` and `hashes`, respectively. They work much like their singular counterparts, but the provided path should match multiple elements.

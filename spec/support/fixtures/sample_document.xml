@@ -1,5 +1,6 @@
 <Root>
   <Name>John Smith</Name>
+  <Email>jsmith@example.com</Email>
   <BadgeIds>
     <BadgeId>1</BadgeId>
     <BadgeId>3</BadgeId>
