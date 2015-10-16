@@ -1,0 +1,25 @@
+<Root>
+  <Name>John Smith</Name>
+  <BadgeIds>
+    <BadgeId>1</BadgeId>
+    <BadgeId>3</BadgeId>
+    <BadgeId>7</BadgeId>
+  </BadgeIds>
+  <UserProfile>
+    <Description>Some user.</Description>
+    <Questions>
+      <Question Id="5">
+        <Title>Question number 5.</Title>
+      </Question>
+      <Question Id="17">
+        <Title>Question number 17.</Title>
+      </Question>
+    </Questions>
+  </UserProfile>
+  <Attributes>
+    <Age>25</Age>
+    <Specialization>
+      <Area>Engineering</Area>
+    </Specialization>
+  </Attributes>
+</Root>
