@@ -9,7 +9,8 @@ module Decontaminate
       end
 
       def decode(xml_node)
-        children = xml_node.xpath xpath
+        children = xml_node && xml_node.xpath(xpath)
+        return [] unless children
         children.map do |child|
           decoder.decode child
         end

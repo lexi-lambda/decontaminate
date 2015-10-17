@@ -39,6 +39,10 @@ RSpec.describe Decontaminate::Decontaminator do
     Nokogiri::XML fixture
   end
 
+  let(:empty_xml_document) do
+    Nokogiri::XML '<Root></Root>'
+  end
+
   it 'decodes XML to JSON' do
     json = SampleDecontaminator.new(xml_document).as_json
     expect(json).to eq(
@@ -61,6 +65,27 @@ RSpec.describe Decontaminate::Decontaminator do
       'privileges' => {
         'paid' => true,
         'admin' => false
+      }
+    )
+  end
+
+  it 'fills in missing keys with nil' do
+    json = SampleDecontaminator.new(empty_xml_document).as_json
+    expect(json).to eq(
+      'name' => nil,
+      'info' => {
+        'email' => nil
+      },
+      'badge_ids' => [],
+      'profile' => {
+        'description' => nil,
+        'questions' => []
+      },
+      'age' => nil,
+      'specialization' => nil,
+      'privileges' => {
+        'paid' => nil,
+        'admin' => nil
       }
     )
   end

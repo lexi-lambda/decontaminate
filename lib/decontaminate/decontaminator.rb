@@ -88,7 +88,7 @@ module Decontaminate
     def as_json
       acc = {}
 
-      root_node = xml_node.at_xpath root
+      root_node = xml_node && xml_node.at_xpath(root)
       decoders.each do |key, decoder|
         acc[key] = decoder.decode root_node
       end
