@@ -1,4 +1,4 @@
-# Decontaminate
+# Decontaminate [![Gem Version](https://badge.fury.io/rb/decontaminate.svg)](https://badge.fury.io/rb/decontaminate) [![Build Status](https://travis-ci.org/lexi-lambda/decontaminate.svg?branch=0.2.0)](https://travis-ci.org/lexi-lambda/decontaminate)
 
 Decontaminate is a tool for extracting information from large, potentially nested XML documents. It provides a simple Ruby DSL for selecting values from Nokogiri objects and storing the results in JSON-like Ruby hashes and arrays.
 
