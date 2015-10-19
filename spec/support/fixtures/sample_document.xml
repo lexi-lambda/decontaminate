@@ -20,6 +20,7 @@
   </UserProfile>
   <Attributes>
     <Age>25</Age>
+    <Height units="ft">5.7</Height>
     <Specialization>
       <Area>Engineering</Area>
     </Specialization>

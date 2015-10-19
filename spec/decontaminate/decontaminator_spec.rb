@@ -26,6 +26,9 @@ RSpec.describe Decontaminate::Decontaminator do
 
     with 'Attributes' do
       scalar 'Age', type: :integer
+      tuple ['Height/text()', 'Height/@units'], key: 'height' do |value, units|
+        value && units && "#{value} #{units}"
+      end
 
       hash 'Specialization' do
         scalar 'Area'
@@ -64,6 +67,7 @@ RSpec.describe Decontaminate::Decontaminator do
         ]
       },
       'age' => 25,
+      'height' => '5.7 ft',
       'specialization' => {
         'area' => 'Engineering'
       },
@@ -88,7 +92,10 @@ RSpec.describe Decontaminate::Decontaminator do
         'questions' => []
       },
       'age' => nil,
-      'specialization' => nil,
+      'height' => nil,
+      'specialization' => {
+        'area' => nil
+      },
       'privileges' => {
         'paid' => nil,
         'admin' => nil

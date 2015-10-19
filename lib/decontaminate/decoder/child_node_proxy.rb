@@ -10,7 +10,7 @@ module Decontaminate
 
       def decode(xml_node)
         child = xml_node && xml_node.at_xpath(xpath)
-        child && decoder.decode(child)
+        decoder.decode child
       end
     end
   end

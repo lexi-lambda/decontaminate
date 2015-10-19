@@ -179,6 +179,22 @@ There are some special things to note in the above example:
     hashes path: 'Article', key: 'articles' do; ...; end
     ```
 
+### Tuple Data
+
+Complementing `scalar` and `hash` is `tuple`, which accepts multiple paths and returns a fixed-length array containing an element for each path.
+
+```ruby
+tuple ['Height/text()', 'Height/@units'], key: 'height_with_units'
+```
+
+The `tuple` method is most useful when supplied with a block, which works like `scalar`'s value transformer, but is supplied with an argument for each path. This allows values to be parsed from multiple values in the source document.
+
+```ruby
+tuple ['Height/text()', 'Height/@units'], key: 'height_cm' do |height, units|
+  convert_units height.to_f, from: units, to: 'cm'
+end
+```
+
 ### Flattening nested data
 
 Since source data is sometimes more nested than is desired, the `with` method is a helper for scoping decontamination directives to a given XML element without increasing the nesting depth of the resulting object. Like `hash`, it accepts an XPath and a block, but the attributes created from within the block will not be wrapped in a hash.

@@ -4,6 +4,7 @@ require_relative 'decoder/array'
 require_relative 'decoder/child_node_proxy'
 require_relative 'decoder/hash'
 require_relative 'decoder/scalar'
+require_relative 'decoder/tuple'
 
 module Decontaminate
   # Decontaminate::Decontaminator is the base class for creating XML extraction
@@ -32,6 +33,12 @@ module Decontaminate
         singular = Decontaminate::Decoder::Scalar.new('.', type, block)
         decoder = Decontaminate::Decoder::Array.new(resolved_path, singular)
 
+        add_decoder key, decoder
+      end
+
+      def tuple(paths, key:, type: :string, &block)
+        scalar = Decontaminate::Decoder::Scalar.new('.', type, nil)
+        decoder = Decontaminate::Decoder::Tuple.new(paths, scalar, block)
         add_decoder key, decoder
       end
 
