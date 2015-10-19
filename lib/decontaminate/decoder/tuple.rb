@@ -9,13 +9,13 @@ module Decontaminate
         @transformer = transformer
       end
 
-      def decode(xml_node)
+      def decode(this, xml_node)
         xml_nodes = xpaths.map { |xpath| xml_node && xml_node.at_xpath(xpath) }
         tuple = xml_nodes.map do |element_node|
-          decoder.decode element_node
+          decoder.decode this, element_node
         end
 
-        tuple = transformer.call(*tuple) if transformer
+        tuple = this.instance_exec(*tuple, &transformer) if transformer
 
         tuple
       end

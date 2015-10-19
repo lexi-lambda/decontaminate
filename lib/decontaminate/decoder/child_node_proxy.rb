@@ -8,9 +8,9 @@ module Decontaminate
         @decoder = decoder
       end
 
-      def decode(xml_node)
+      def decode(this, xml_node)
         child = xml_node && xml_node.at_xpath(xpath)
-        decoder.decode child
+        decoder.decode this, child
       end
     end
   end

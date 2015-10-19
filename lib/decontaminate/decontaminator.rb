@@ -22,13 +22,24 @@ module Decontaminate
         end
       end
 
-      def scalar(xpath, type: :string, key: infer_key(xpath), &block)
+      def scalar(xpath,
+                 type: :string,
+                 key: infer_key(xpath),
+                 transformer: nil,
+                 &block)
+        block ||= self_proc_for_method transformer
         add_decoder key, Decontaminate::Decoder::Scalar.new(xpath, type, block)
       end
 
-      def scalars(xpath = nil, path: nil, type: :string, key: nil, &block)
+      def scalars(xpath = nil,
+                  path: nil,
+                  type: :string,
+                  key: nil,
+                  transformer: nil,
+                  &block)
         resolved_path = path || infer_plural_path(xpath)
         key ||= infer_key(path || xpath)
+        block ||= self_proc_for_method transformer
 
         singular = Decontaminate::Decoder::Scalar.new('.', type, block)
         decoder = Decontaminate::Decoder::Array.new(resolved_path, singular)
@@ -36,9 +47,16 @@ module Decontaminate
         add_decoder key, decoder
       end
 
-      def tuple(paths, key:, type: :string, &block)
+      def tuple(paths,
+                key:,
+                type: :string,
+                transformer: nil,
+                &block)
+        block ||= self_proc_for_method transformer
+
         scalar = Decontaminate::Decoder::Scalar.new('.', type, nil)
         decoder = Decontaminate::Decoder::Tuple.new(paths, scalar, block)
+
         add_decoder key, decoder
       end
 
@@ -84,12 +102,19 @@ module Decontaminate
       def infer_plural_path(xpath)
         xpath + '/' + xpath.split('/').last.singularize
       end
+
+      private
+
+      def self_proc_for_method(sym)
+        sym && proc { |*args| send sym, *args }
+      end
     end
 
     attr_reader :xml_node
 
-    def initialize(xml_node)
+    def initialize(xml_node, instance: nil)
       @xml_node = xml_node
+      @instance = instance
     end
 
     def as_json
@@ -97,13 +122,19 @@ module Decontaminate
 
       root_node = xml_node && xml_node.at_xpath(root)
       decoders.each do |key, decoder|
-        acc[key] = decoder.decode root_node
+        acc[key] = decoder.decode instance, root_node
       end
 
       acc
     end
 
     private
+
+    # The canonical instance that all blocks should run within. Child
+    # (anonymous) decontaminators should delegate to the parent.
+    def instance
+      @instance || self
+    end
 
     def decoders
       self.class.decoders

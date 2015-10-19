@@ -8,9 +8,9 @@ module Decontaminate
         @decontaminator = decontaminator
       end
 
-      def decode(xml_node)
+      def decode(this, xml_node)
         child = xml_node && xml_node.at_xpath(xpath)
-        decontaminator.new(child).as_json
+        decontaminator.new(child, instance: this).as_json
       end
     end
   end

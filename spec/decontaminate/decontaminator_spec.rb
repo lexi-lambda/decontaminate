@@ -11,6 +11,10 @@ RSpec.describe Decontaminate::Decontaminator do
       percent && percent / 100.0
     end
 
+    scalar 'RatingPercentage',
+           key: 'transformed_rating',
+           transformer: :instance_transformer
+
     hash key: 'info' do
       scalar 'Email'
     end
@@ -39,6 +43,10 @@ RSpec.describe Decontaminate::Decontaminator do
       scalar 'IsPaid', key: 'paid', type: :boolean
       scalar 'IsAdmin', key: 'admin', type: :boolean
     end
+
+    def instance_transformer(value)
+      value && "transformed: #{value}"
+    end
   end
 
   let(:xml_document) do
@@ -55,6 +63,7 @@ RSpec.describe Decontaminate::Decontaminator do
     expect(json).to eq(
       'name' => 'John Smith',
       'rating' => 0.85,
+      'transformed_rating' => 'transformed: 85',
       'info' => {
         'email' => 'jsmith@example.com'
       },
@@ -83,6 +92,7 @@ RSpec.describe Decontaminate::Decontaminator do
     expect(json).to eq(
       'name' => nil,
       'rating' => nil,
+      'transformed_rating' => nil,
       'info' => {
         'email' => nil
       },

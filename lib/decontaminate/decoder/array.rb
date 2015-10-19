@@ -8,11 +8,11 @@ module Decontaminate
         @decoder = decoder
       end
 
-      def decode(xml_node)
+      def decode(this, xml_node)
         children = xml_node && xml_node.xpath(xpath)
         return [] unless children
         children.map do |child|
-          decoder.decode child
+          decoder.decode this, child
         end
       end
     end

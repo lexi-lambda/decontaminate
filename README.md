@@ -78,6 +78,19 @@ scalar 'RatingPercentage', key: 'rating_ratio', type: :float do |percentage|
 end
 ```
 
+Transformer blocks are evaluated in the context of the decontaminator instance, so instance methods can be called. Additionally, it is possible to call instance methods as transformers directly without needing to pass a block by passing the name of the method as the `transformer:` keyword argument.
+
+```ruby
+scalar 'RatingPercentage',
+       key: 'rating_ratio',
+       type: :float,
+       transformer: :percentage_to_ratio
+
+def percentage_to_ratio(percentage)
+  percentage && percentage / 100.0
+end
+```
+
 ### Nested Values
 
 It's also possible to specify nested or even deeply nested hashes with the `hash` class method:
@@ -194,6 +207,8 @@ tuple ['Height/text()', 'Height/@units'], key: 'height_cm' do |height, units|
   convert_units height.to_f, from: units, to: 'cm'
 end
 ```
+
+Tuples also support the shorthand `transformer:` argument that `scalar` and `scalars` support.
 
 ### Flattening nested data
 

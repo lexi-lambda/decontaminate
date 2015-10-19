@@ -9,9 +9,9 @@ module Decontaminate
         @transformer = transformer
       end
 
-      def decode(xml_node)
+      def decode(this, xml_node)
         value = value_from_xml_node xml_node
-        value = transformer.call value if transformer
+        value = this.instance_exec(value, &transformer) if transformer
         value
       end
 
