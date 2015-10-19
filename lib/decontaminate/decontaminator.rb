@@ -21,15 +21,15 @@ module Decontaminate
         end
       end
 
-      def scalar(xpath, type: :string, key: infer_key(xpath))
-        add_decoder key, Decontaminate::Decoder::Scalar.new(xpath, type)
+      def scalar(xpath, type: :string, key: infer_key(xpath), &block)
+        add_decoder key, Decontaminate::Decoder::Scalar.new(xpath, type, block)
       end
 
-      def scalars(xpath = nil, path: nil, type: :string, key: nil)
+      def scalars(xpath = nil, path: nil, type: :string, key: nil, &block)
         resolved_path = path || infer_plural_path(xpath)
         key ||= infer_key(path || xpath)
 
-        singular = Decontaminate::Decoder::Scalar.new('.', type)
+        singular = Decontaminate::Decoder::Scalar.new('.', type, block)
         decoder = Decontaminate::Decoder::Array.new(resolved_path, singular)
 
         add_decoder key, decoder

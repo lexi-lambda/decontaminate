@@ -1,6 +1,7 @@
 <Root>
   <Name>John Smith</Name>
   <Email>jsmith@example.com</Email>
+  <RatingPercentage>85</RatingPercentage>
   <BadgeIds>
     <BadgeId>1</BadgeId>
     <BadgeId>3</BadgeId>

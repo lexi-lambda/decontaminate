@@ -68,6 +68,16 @@ Attributes can be specified with XPath syntax by prepending an `@` sign:
 scalar '@id', type: :integer
 ```
 
+#### Scalar Transformers
+
+In addition to customization of the parser using the `type:` keyword argument, `scalar` can be provided with a block that will allow custom transformation of the value. It will be supplied with the value as parsed according to the provided type, and the return value will be the result stored in the output.
+
+```ruby
+scalar 'RatingPercentage', key: 'rating_ratio', type: :float do |percentage|
+  percentage && percentage / 100.0
+end
+```
+
 ### Nested Values
 
 It's also possible to specify nested or even deeply nested hashes with the `hash` class method:

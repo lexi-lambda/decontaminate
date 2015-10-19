@@ -7,6 +7,10 @@ RSpec.describe Decontaminate::Decontaminator do
     scalar 'Name'
     scalars 'BadgeIds', type: :integer
 
+    scalar 'RatingPercentage', key: 'rating', type: :float do |percent|
+      percent && percent / 100.0
+    end
+
     hash key: 'info' do
       scalar 'Email'
     end
@@ -47,6 +51,7 @@ RSpec.describe Decontaminate::Decontaminator do
     json = SampleDecontaminator.new(xml_document).as_json
     expect(json).to eq(
       'name' => 'John Smith',
+      'rating' => 0.85,
       'info' => {
         'email' => 'jsmith@example.com'
       },
@@ -73,6 +78,7 @@ RSpec.describe Decontaminate::Decontaminator do
     json = SampleDecontaminator.new(empty_xml_document).as_json
     expect(json).to eq(
       'name' => nil,
+      'rating' => nil,
       'info' => {
         'email' => nil
       },
