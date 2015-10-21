@@ -112,4 +112,28 @@ RSpec.describe Decontaminate::Decontaminator do
       }
     )
   end
+
+  describe '.infer_key' do
+    def infer_key(*args)
+      Decontaminate::Decontaminator.infer_key(*args)
+    end
+
+    it 'converts camel case to underscores' do
+      expect(infer_key 'FooBarBaz').to eq 'foo_bar_baz'
+    end
+
+    it 'strips a leading @ sign' do
+      expect(infer_key '@FooBarBaz').to eq 'foo_bar_baz'
+    end
+
+    it 'strips leading and trailing underscores after @ removal' do
+      cases = %w(
+        _FooBarBaz __FooBarBaz FooBarBaz_ FooBarBaz__ __FooBarBaz_ _FooBarBaz__
+        __FooBarBaz__ @_FooBarBaz @__FooBarBaz @FooBarBaz_ @FooBarBaz__
+        @__FooBarBaz_ @_FooBarBaz__ @__FooBarBaz__
+      )
+
+      expect(cases.map { |c| infer_key c }).to all eq 'foo_bar_baz'
+    end
+  end
 end

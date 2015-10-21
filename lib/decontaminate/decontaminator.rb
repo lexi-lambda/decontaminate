@@ -96,7 +96,7 @@ module Decontaminate
       end
 
       def infer_key(xpath)
-        xpath.delete('@').underscore
+        xpath.delete('@').gsub(/^_+|_+$/, '').underscore
       end
 
       def infer_plural_path(xpath)
