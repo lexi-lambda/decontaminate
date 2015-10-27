@@ -156,7 +156,7 @@ module Decontaminate
       # @param body A block that includes directives that specify the contents
       #   of the hash
       def hash(xpath = '.', key: infer_key(xpath), &body)
-        decontaminator = Class.new(Decontaminate::Decontaminator, &body)
+        decontaminator = Class.new(class_to_inherit_from, &body)
         add_decoder key, Decontaminate::Decoder::Hash.new(xpath, decontaminator)
       end
 
@@ -181,7 +181,7 @@ module Decontaminate
         resolved_path = path || infer_plural_path(xpath)
         key ||= infer_key(path || xpath)
 
-        decontaminator = Class.new(Decontaminate::Decontaminator, &body)
+        decontaminator = Class.new(class_to_inherit_from, &body)
         singular = Decontaminate::Decoder::Hash.new('.', decontaminator)
         decoder = Decontaminate::Decoder::Array.new(resolved_path, singular)
 
@@ -199,12 +199,19 @@ module Decontaminate
       #   referenced node
       def with(xpath, &body)
         this = self
-        decontaminator = Class.new(Decontaminate::Decontaminator)
+        decontaminator = Class.new(class_to_inherit_from)
 
         decontaminator.instance_eval do
+          # proxy add_decoder to the parent class
           define_singleton_method :add_decoder do |key, decoder|
             proxy = Decontaminate::Decoder::ChildNodeProxy.new(xpath, decoder)
             this.add_decoder key, proxy
+          end
+
+          # also, don't let subclasses inherit from this; they would also pick
+          # up the overridden add_decoder method
+          define_singleton_method :class_to_inherit_from do
+            this
           end
         end
 
@@ -253,6 +260,10 @@ module Decontaminate
       end
 
       private
+
+      def class_to_inherit_from
+        self
+      end
 
       def self_proc_for_method(sym)
         sym && proc { |*args| send sym, *args }

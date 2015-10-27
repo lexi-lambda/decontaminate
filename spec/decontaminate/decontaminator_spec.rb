@@ -113,6 +113,33 @@ RSpec.describe Decontaminate::Decontaminator do
     )
   end
 
+  describe '.hash, .hashes, and .with' do
+    it 'create decontaminators that inherit from the parent' do
+      class OverridingDecontaminator < Decontaminate::Decontaminator
+        def self.infer_key(xpath)
+          super xpath.gsub(/_suffix$/, '')
+        end
+
+        with 'Nested' do
+          hash 'Container_suffix' do
+            scalar 'Value'
+          end
+        end
+      end
+
+      xml_node = Nokogiri::XML(
+        '<Nested>' \
+        '  <Container_suffix>' \
+        '    <Value>a value</Value>' \
+        '  </Container_suffix>' \
+        '</Nested>'
+      )
+
+      json = OverridingDecontaminator.new(xml_node).as_json
+      expect(json).to eq 'container' => { 'value' => 'a value' }
+    end
+  end
+
   describe '.infer_key' do
     def infer_key(*args)
       Decontaminate::Decontaminator.infer_key(*args)
